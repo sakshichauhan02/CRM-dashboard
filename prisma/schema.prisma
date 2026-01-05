@@ -1,0 +1,180 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// Note: SQLite doesn't support enums, so we use String types instead
+// Enums are: Role (ADMIN, MANAGER, SALES), LeadStatus (NEW, CONTACTED, QUALIFIED, LOST, CONVERTED)
+// LeadSource (WEBSITE, REFERRAL, ADS, COLD_CALL), DealStage (PROSPECT, PROPOSAL, NEGOTIATION, WON, LOST)
+// TaskStatus (PENDING, COMPLETED), ActivityType (CALL, EMAIL, MEETING, NOTE, OTHER)
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  password      String
+  role          String    @default("SALES") // ADMIN, MANAGER, SALES
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  assignedLeads    Lead[]
+  assignedDeals    Deal[]
+  assignedTasks    Task[]
+  createdActivities Activity[] @relation("ActivityCreator")
+  notifications     Notification[]
+  createdNotes      Note[]
+
+  @@map("users")
+}
+
+model Lead {
+  id            String      @id @default(cuid())
+  name          String
+  email         String
+  phone         String?
+  source        String      // WEBSITE, REFERRAL, ADS, COLD_CALL
+  status        String      @default("NEW") // NEW, CONTACTED, QUALIFIED, LOST, CONVERTED
+  assignedToId  String?
+  notes         String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // Relations
+  assignedTo    User?       @relation(fields: [assignedToId], references: [id])
+  activities    Activity[]
+  deal          Deal?
+  tasks         Task[]
+  convertedTo   Customer?
+
+  @@map("leads")
+}
+
+model Customer {
+  id              String      @id @default(cuid())
+  name            String
+  email           String
+  phone           String?
+  company         String?
+  industry        String?
+  totalDealValue  Float?
+  status          String      @default("ACTIVE") // ACTIVE, INACTIVE
+  notes           String?
+  convertedFromId String?     @unique
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  convertedFrom   Lead?       @relation(fields: [convertedFromId], references: [id])
+  deals           Deal[]
+  activities      Activity[]
+  tasks           Task[]
+  notesRelation   Note[]
+
+  @@map("customers")
+}
+
+model Deal {
+  id                String      @id @default(cuid())
+  name              String
+  value             Float
+  stage             String      @default("PROSPECT") // PROSPECT, PROPOSAL, NEGOTIATION, WON, LOST
+  expectedCloseDate DateTime?
+  assignedToId      String?
+  customerId        String?
+  leadId            String?     @unique
+  notes             String?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  // Relations
+  assignedTo        User?       @relation(fields: [assignedToId], references: [id])
+  customer          Customer?   @relation(fields: [customerId], references: [id])
+  lead              Lead?       @relation(fields: [leadId], references: [id])
+  activities        Activity[]
+  tasks             Task[]
+
+  @@map("deals")
+}
+
+model Task {
+  id            String      @id @default(cuid())
+  title         String
+  description   String?
+  status        String      @default("PENDING") // PENDING, COMPLETED
+  dueDate       DateTime?
+  assignedToId  String?
+  leadId        String?
+  customerId    String?
+  dealId        String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // Relations
+  assignedTo    User?       @relation(fields: [assignedToId], references: [id])
+  lead          Lead?       @relation(fields: [leadId], references: [id])
+  customer      Customer?   @relation(fields: [customerId], references: [id])
+  deal          Deal?       @relation(fields: [dealId], references: [id])
+
+  @@map("tasks")
+}
+
+model Activity {
+  id            String        @id @default(cuid())
+  type          String        // CALL, EMAIL, MEETING, NOTE, OTHER
+  title         String
+  description   String?
+  activityDate  DateTime      @default(now())
+  createdById   String
+  leadId        String?
+  customerId    String?
+  dealId        String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relations
+  createdBy     User          @relation("ActivityCreator", fields: [createdById], references: [id])
+  lead          Lead?         @relation(fields: [leadId], references: [id])
+  customer      Customer?     @relation(fields: [customerId], references: [id])
+  deal          Deal?         @relation(fields: [dealId], references: [id])
+
+  @@map("activities")
+}
+
+model Note {
+  id            String      @id @default(cuid())
+  content       String
+  createdById   String
+  customerId    String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // Relations
+  createdBy     User        @relation(fields: [createdById], references: [id])
+  customer      Customer?   @relation(fields: [customerId], references: [id])
+
+  @@map("notes")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  title     String
+  message   String
+  userId    String
+  read      Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("notifications")
+}
