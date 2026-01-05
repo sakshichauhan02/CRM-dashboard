@@ -7,6 +7,8 @@ import { LeadFilters } from '@/components/leads/filters'
 import { LeadsTable } from '@/components/leads/table'
 import { Suspense } from 'react'
 
+export const dynamic = 'force-dynamic'
+
 export default async function LeadsPage({
   searchParams,
 }: {

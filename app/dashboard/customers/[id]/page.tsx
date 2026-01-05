@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import { CustomerForm } from '@/components/customers/form'
 import { CustomerDetails } from '@/components/customers/details'
 
+export const dynamic = 'force-dynamic'
+
 export default async function CustomerDetailPage({ params }: { params: { id: string } }) {
   const customer = await getCustomer(params.id)
 

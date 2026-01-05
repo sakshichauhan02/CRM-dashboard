@@ -3,6 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { formatCurrency, formatDate } from '@/lib/utils'
 import { DashboardCharts } from '@/components/dashboard/charts'
 
+export const dynamic = 'force-dynamic'
+
 export default async function DashboardPage() {
   const stats = await getDashboardStats()
 

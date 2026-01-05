@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDate } from '@/lib/utils'
 
+export const dynamic = 'force-dynamic'
+
 export default async function ProfilePage() {
   const session = await requireAuth()
 

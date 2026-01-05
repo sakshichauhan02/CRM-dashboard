@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { DealsKanban } from '@/components/deals/kanban'
 
+export const dynamic = 'force-dynamic'
+
 export default async function DealsPage() {
   const dealsByStage = await getDealsByStage()
 

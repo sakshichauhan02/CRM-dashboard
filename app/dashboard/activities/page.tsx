@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button'
 import { ActivitiesTable } from '@/components/activities/table'
 import { CreateActivityDialog } from '@/components/activities/create-dialog'
 
+export const dynamic = 'force-dynamic'
+
 export default async function ActivitiesPage({
   searchParams,
 }: {
