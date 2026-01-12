@@ -7,6 +7,12 @@ export const runtime = 'nodejs'
 
 export default async function Home() {
   try {
+    // Validate environment variables
+    if (!process.env.NEXTAUTH_SECRET) {
+      console.error('NEXTAUTH_SECRET is missing')
+      // Still redirect to login, but auth won't work
+    }
+
     const session = await getServerSession(authOptions)
 
     if (session) {
@@ -14,8 +20,9 @@ export default async function Home() {
     } else {
       redirect('/auth/login')
     }
-  } catch (error) {
-    // If database/auth fails during build, redirect to login
+  } catch (error: any) {
+    console.error('Error in root page:', error?.message || error)
+    // If database/auth fails, redirect to login
     redirect('/auth/login')
   }
 }

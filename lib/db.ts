@@ -5,6 +5,11 @@ const globalForPrisma = globalThis as unknown as {
 }
 
 function createPrismaClient() {
+  // Validate DATABASE_URL in production
+  if (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
+    console.error('⚠️  DATABASE_URL is not set! Database operations will fail.')
+  }
+  
   return new PrismaClient({
     log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
   })

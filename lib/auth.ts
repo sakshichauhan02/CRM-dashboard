@@ -3,6 +3,11 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import { prisma } from './db'
 import * as bcrypt from 'bcryptjs'
 
+// Validate required environment variables
+if (!process.env.NEXTAUTH_SECRET) {
+  console.error('⚠️  NEXTAUTH_SECRET is not set! Authentication will not work.')
+}
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
