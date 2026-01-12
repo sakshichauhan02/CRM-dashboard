@@ -16,9 +16,10 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
-        })
+        try {
+          const user = await prisma.user.findUnique({
+            where: { email: credentials.email },
+          })
 
         if (!user || !user.isActive) {
           return null
@@ -29,15 +30,19 @@ export const authOptions: NextAuthOptions = {
           user.password
         )
 
-        if (!isPasswordValid) {
-          return null
-        }
+          if (!isPasswordValid) {
+            return null
+          }
 
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+          }
+        } catch (error) {
+          console.error('Database error during authentication:', error)
+          return null
         }
       },
     }),

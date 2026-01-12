@@ -4,6 +4,7 @@ import { CustomerForm } from '@/components/customers/form'
 import { CustomerDetails } from '@/components/customers/details'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
 export default async function CustomerDetailPage({ params }: { params: { id: string } }) {
   const customer = await getCustomer(params.id)

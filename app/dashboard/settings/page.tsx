@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { UsersManagement } from '@/components/settings/users-management'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
 export default async function SettingsPage() {
   await requireRole(['ADMIN', 'MANAGER'])

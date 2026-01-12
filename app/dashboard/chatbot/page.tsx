@@ -2,6 +2,7 @@ import { requireRole } from '@/lib/middleware'
 import { Chatbot } from '@/components/chatbot/chatbot'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
 export default async function ChatbotPage() {
   await requireRole(['ADMIN'])

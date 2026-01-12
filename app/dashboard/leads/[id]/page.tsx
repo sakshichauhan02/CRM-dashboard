@@ -5,6 +5,7 @@ import { LeadForm } from '@/components/leads/form'
 import { LeadDetails } from '@/components/leads/details'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
 export default async function LeadDetailPage({ params }: { params: { id: string } }) {
   const [lead, users] = await Promise.all([getLead(params.id), getUsers()])

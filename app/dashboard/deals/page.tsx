@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { DealsKanban } from '@/components/deals/kanban'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
 export default async function DealsPage() {
   const dealsByStage = await getDealsByStage()

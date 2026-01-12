@@ -8,6 +8,7 @@ import { LeadsTable } from '@/components/leads/table'
 import { Suspense } from 'react'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
 export default async function LeadsPage({
   searchParams,

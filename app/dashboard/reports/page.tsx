@@ -8,6 +8,7 @@ import { formatCurrency } from '@/lib/utils'
 import { ExportReportsButton } from '@/components/reports/export-button'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
 export default async function ReportsPage() {
   const [stats, users, leadsData, dealsData] = await Promise.all([
