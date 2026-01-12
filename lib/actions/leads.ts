@@ -12,9 +12,9 @@ export async function getLeads(page: number = 1, pageSize: number = 10, search?:
 
   if (search) {
     where.OR = [
-      { name: { contains: search } },
-      { email: { contains: search } },
-      { phone: { contains: search } },
+      { name: { contains: search, mode: 'insensitive' } },
+      { email: { contains: search, mode: 'insensitive' } },
+      { phone: { contains: search, mode: 'insensitive' } },
     ]
   }
 
