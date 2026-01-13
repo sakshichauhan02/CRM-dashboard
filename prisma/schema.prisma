@@ -6,11 +6,11 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-// Note: SQLite doesn't support enums, so we use String types instead
+// Using String types for enums for compatibility
 // Enums are: Role (ADMIN, MANAGER, SALES), LeadStatus (NEW, CONTACTED, QUALIFIED, LOST, CONVERTED)
 // LeadSource (WEBSITE, REFERRAL, ADS, COLD_CALL), DealStage (PROSPECT, PROPOSAL, NEGOTIATION, WON, LOST)
 // TaskStatus (PENDING, COMPLETED), ActivityType (CALL, EMAIL, MEETING, NOTE, OTHER)

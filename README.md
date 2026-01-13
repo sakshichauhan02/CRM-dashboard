@@ -1,6 +1,6 @@
 # CRM Dashboard
 
-A complete, production-ready CRM Dashboard built with Next.js, TypeScript, Prisma, and SQLite.
+A complete, production-ready CRM Dashboard built with Next.js, TypeScript, Prisma, and PostgreSQL.
 
 ## Features
 
@@ -19,7 +19,7 @@ A complete, production-ready CRM Dashboard built with Next.js, TypeScript, Prism
 - **Framework**: Next.js 14 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
-- **Database**: SQLite
+- **Database**: PostgreSQL
 - **ORM**: Prisma
 - **Authentication**: NextAuth.js
 - **Charts**: Chart.js
@@ -29,6 +29,7 @@ A complete, production-ready CRM Dashboard built with Next.js, TypeScript, Prism
 ### Prerequisites
 
 - Node.js 18+ installed
+- PostgreSQL database (for production) or use Vercel Postgres (recommended)
 - npm or yarn package manager
 
 ### Installation
@@ -51,12 +52,18 @@ npm install
 Create a `.env` file in the root directory:
 
 ```env
+# Database (PostgreSQL)
+DATABASE_URL="postgresql://user:password@localhost:5432/crm?schema=public"
+
 # NextAuth
 NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET="your-secret-key-change-this-in-production"
 ```
 
-**Note:** This project uses SQLite, so no database connection string is needed. The database file (`dev.db`) will be created automatically in the `prisma` directory.
+For local development, you can use:
+- Local PostgreSQL instance
+- Docker PostgreSQL container
+- Free PostgreSQL services like Supabase, Neon, or Railway
 
 For the `NEXTAUTH_SECRET`, you can generate one using:
 ```bash
@@ -198,17 +205,66 @@ The application uses the following main models:
 - Protected API routes
 - Input validation
 
-## Deployment
+## Deployment to Vercel
 
-For production deployment, you may want to switch to PostgreSQL or another database:
+This project is configured for easy deployment to Vercel with PostgreSQL.
 
-1. Update the `datasource` in `prisma/schema.prisma` to use PostgreSQL
-2. Set up a PostgreSQL database (e.g., on Vercel Postgres, Supabase, or Railway)
-3. Update `DATABASE_URL` in your environment variables
-4. Update `NEXTAUTH_URL` and `NEXTAUTH_SECRET`
-5. Deploy to Vercel, Netlify, or your preferred hosting platform
+### Quick Deploy to Vercel
 
-**Note:** For local development, SQLite is used and requires no additional setup.
+1. **Push your code to GitHub**
+   ```bash
+   git add .
+   git commit -m "Prepare for Vercel deployment"
+   git push origin main
+   ```
+
+2. **Import project on Vercel**
+   - Go to [vercel.com](https://vercel.com) and sign in
+   - Click "Add New" → "Project"
+   - Import your GitHub repository
+
+3. **Set up Vercel Postgres (Recommended)**
+   - In your Vercel project dashboard, go to the "Storage" tab
+   - Click "Create Database" → Select "Postgres"
+   - Vercel will automatically add the `POSTGRES_URL` environment variable
+
+4. **Configure Environment Variables**
+   In your Vercel project settings, add these environment variables:
+   - `DATABASE_URL`: Use the `POSTGRES_URL` from Vercel Postgres (automatically set if you use Vercel Postgres)
+   - `NEXTAUTH_URL`: Your Vercel deployment URL (e.g., `https://your-app.vercel.app`)
+   - `NEXTAUTH_SECRET`: Generate using `openssl rand -base64 32`
+
+5. **Deploy**
+   - Vercel will automatically deploy on push to main branch
+   - The build process will:
+     - Run `postinstall` script to generate Prisma Client
+     - Build your Next.js application
+
+6. **Set up the database**
+   After deployment, run migrations and seed the database:
+   ```bash
+   # Using Vercel CLI (install: npm i -g vercel)
+   vercel env pull .env.local
+   npx prisma db push
+   npx prisma db seed
+   ```
+
+### Alternative: Using External PostgreSQL
+
+If you prefer to use an external PostgreSQL database (Supabase, Railway, etc.):
+
+1. Set up your PostgreSQL database
+2. Get the connection string
+3. Add `DATABASE_URL` to Vercel environment variables
+4. Deploy and run migrations as above
+
+### Post-Deployment
+
+- Run database migrations: `npx prisma db push` (or use `prisma migrate deploy` for production)
+- Seed initial data: `npx prisma db seed`
+- Your app will be available at `https://your-app.vercel.app`
+
+**Note:** The project is configured with `postinstall` script to automatically generate Prisma Client during Vercel builds.
 
 ## License
 
