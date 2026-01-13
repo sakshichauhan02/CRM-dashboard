@@ -2,9 +2,6 @@ import { getUsers } from '@/lib/actions/users'
 import { getCustomers } from '@/lib/actions/customers'
 import { DealForm } from '@/components/deals/form'
 
-export const dynamic = 'force-dynamic'
-export const runtime = 'nodejs'
-
 export default async function NewDealPage({
   searchParams,
 }: {

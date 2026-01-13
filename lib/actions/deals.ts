@@ -11,8 +11,8 @@ export async function getDeals(page: number = 1, pageSize: number = 10, search?:
 
   if (search) {
     where.OR = [
-      { name: { contains: search, mode: 'insensitive' } },
-      { customer: { name: { contains: search, mode: 'insensitive' } } },
+      { name: { contains: search } },
+      { customer: { name: { contains: search } } },
     ]
   }
 

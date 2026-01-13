@@ -3,11 +3,6 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import { prisma } from './db'
 import * as bcrypt from 'bcryptjs'
 
-// Validate required environment variables
-if (!process.env.NEXTAUTH_SECRET) {
-  console.error('⚠️  NEXTAUTH_SECRET is not set! Authentication will not work.')
-}
-
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -21,10 +16,9 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
-        try {
-          const user = await prisma.user.findUnique({
-            where: { email: credentials.email },
-          })
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        })
 
         if (!user || !user.isActive) {
           return null
@@ -35,19 +29,15 @@ export const authOptions: NextAuthOptions = {
           user.password
         )
 
-          if (!isPasswordValid) {
-            return null
-          }
-
-          return {
-            id: user.id,
-            email: user.email,
-            name: user.name,
-            role: user.role,
-          }
-        } catch (error) {
-          console.error('Database error during authentication:', error)
+        if (!isPasswordValid) {
           return null
+        }
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
         }
       },
     }),

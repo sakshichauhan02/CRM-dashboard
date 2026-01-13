@@ -1,6 +1,6 @@
 # CRM Dashboard
 
-A complete, production-ready CRM Dashboard built with Next.js, TypeScript, Prisma, and PostgreSQL.
+A complete, production-ready CRM Dashboard built with Next.js, TypeScript, Prisma, and SQLite.
 
 ## Features
 
@@ -19,7 +19,7 @@ A complete, production-ready CRM Dashboard built with Next.js, TypeScript, Prism
 - **Framework**: Next.js 14 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
-- **Database**: PostgreSQL (or MySQL)
+- **Database**: SQLite
 - **ORM**: Prisma
 - **Authentication**: NextAuth.js
 - **Charts**: Chart.js
@@ -29,7 +29,6 @@ A complete, production-ready CRM Dashboard built with Next.js, TypeScript, Prism
 ### Prerequisites
 
 - Node.js 18+ installed
-- PostgreSQL database (or MySQL)
 - npm or yarn package manager
 
 ### Installation
@@ -52,13 +51,12 @@ npm install
 Create a `.env` file in the root directory:
 
 ```env
-# Database
-DATABASE_URL="postgresql://user:password@localhost:5432/crm?schema=public"
-
 # NextAuth
 NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET="your-secret-key-change-this-in-production"
 ```
+
+**Note:** This project uses SQLite, so no database connection string is needed. The database file (`dev.db`) will be created automatically in the `prisma` directory.
 
 For the `NEXTAUTH_SECRET`, you can generate one using:
 ```bash
@@ -202,10 +200,15 @@ The application uses the following main models:
 
 ## Deployment
 
-1. Set up a PostgreSQL database (e.g., on Vercel Postgres, Supabase, or Railway)
-2. Update `DATABASE_URL` in your environment variables
-3. Update `NEXTAUTH_URL` and `NEXTAUTH_SECRET`
-4. Deploy to Vercel, Netlify, or your preferred hosting platform
+For production deployment, you may want to switch to PostgreSQL or another database:
+
+1. Update the `datasource` in `prisma/schema.prisma` to use PostgreSQL
+2. Set up a PostgreSQL database (e.g., on Vercel Postgres, Supabase, or Railway)
+3. Update `DATABASE_URL` in your environment variables
+4. Update `NEXTAUTH_URL` and `NEXTAUTH_SECRET`
+5. Deploy to Vercel, Netlify, or your preferred hosting platform
+
+**Note:** For local development, SQLite is used and requires no additional setup.
 
 ## License
 

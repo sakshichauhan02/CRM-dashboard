@@ -1,9 +1,6 @@
 import { getUsers } from '@/lib/actions/users'
 import { TaskForm } from '@/components/tasks/form'
 
-export const dynamic = 'force-dynamic'
-export const runtime = 'nodejs'
-
 export default async function NewTaskPage() {
   const users = await getUsers()
 

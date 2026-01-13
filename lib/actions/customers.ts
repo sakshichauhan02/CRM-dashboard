@@ -9,9 +9,9 @@ export async function getCustomers(page: number = 1, pageSize: number = 10, sear
 
   if (search) {
     where.OR = [
-      { name: { contains: search, mode: 'insensitive' } },
-      { email: { contains: search, mode: 'insensitive' } },
-      { company: { contains: search, mode: 'insensitive' } },
+      { name: { contains: search } },
+      { email: { contains: search } },
+      { company: { contains: search } },
     ]
   }
 

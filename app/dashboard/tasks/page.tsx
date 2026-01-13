@@ -6,9 +6,6 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { TasksTable } from '@/components/tasks/table'
 
-export const dynamic = 'force-dynamic'
-export const runtime = 'nodejs'
-
 export default async function TasksPage({
   searchParams,
 }: {

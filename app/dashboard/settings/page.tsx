@@ -3,9 +3,6 @@ import { getUsers } from '@/lib/actions/users'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { UsersManagement } from '@/components/settings/users-management'
 
-export const dynamic = 'force-dynamic'
-export const runtime = 'nodejs'
-
 export default async function SettingsPage() {
   await requireRole(['ADMIN', 'MANAGER'])
   const users = await getUsers()

@@ -5,9 +5,6 @@ import { notFound } from 'next/navigation'
 import { DealForm } from '@/components/deals/form'
 import { DealDetails } from '@/components/deals/details'
 
-export const dynamic = 'force-dynamic'
-export const runtime = 'nodejs'
-
 export default async function DealDetailPage({ params }: { params: { id: string } }) {
   const [deal, users, customersData] = await Promise.all([
     getDeal(params.id),

@@ -3,9 +3,6 @@ import { getUsers } from '@/lib/actions/users'
 import { notFound } from 'next/navigation'
 import { TaskForm } from '@/components/tasks/form'
 
-export const dynamic = 'force-dynamic'
-export const runtime = 'nodejs'
-
 export default async function TaskDetailPage({ params }: { params: { id: string } }) {
   const [tasksData, users] = await Promise.all([getTasks(1, 1), getUsers()])
   const task = tasksData.tasks.find((t) => t.id === params.id)

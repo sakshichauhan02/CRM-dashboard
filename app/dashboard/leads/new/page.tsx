@@ -1,9 +1,6 @@
 import { getUsers } from '@/lib/actions/users'
 import { LeadForm } from '@/components/leads/form'
 
-export const dynamic = 'force-dynamic'
-export const runtime = 'nodejs'
-
 export default async function NewLeadPage() {
   const users = await getUsers()
 

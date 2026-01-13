@@ -36,7 +36,6 @@ export async function processChatMessage(message: string): Promise<string> {
         where: {
           name: {
             contains: searchName,
-            mode: 'insensitive',
           },
         },
         include: {
@@ -64,7 +63,7 @@ export async function processChatMessage(message: string): Promise<string> {
       const partialMatch = await prisma.user.findFirst({
         where: {
           OR: [
-            { email: { contains: searchName, mode: 'insensitive' } },
+            { email: { contains: searchName } },
           ],
         },
         include: {

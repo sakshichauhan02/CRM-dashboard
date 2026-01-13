@@ -1,8 +1,5 @@
 import { CustomerForm } from '@/components/customers/form'
 
-export const dynamic = 'force-dynamic'
-export const runtime = 'nodejs'
-
 export default async function NewCustomerPage() {
   return (
     <div className="space-y-6">

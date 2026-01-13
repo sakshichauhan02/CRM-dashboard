@@ -6,9 +6,6 @@ import { formatCurrency, formatDate } from '@/lib/utils'
 import { CustomersTable } from '@/components/customers/table'
 import { CustomerSearch } from '@/components/customers/search'
 
-export const dynamic = 'force-dynamic'
-export const runtime = 'nodejs'
-
 export default async function CustomersPage({
   searchParams,
 }: {
